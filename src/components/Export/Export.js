@@ -1,9 +1,9 @@
 import React, {useContext, useRef} from 'react';
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 
 function Export() {
 
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
     const {
         translate
     } = context;
@@ -15,7 +15,7 @@ function Export() {
         const {
             params: {
                 header,
-                description,
+                description = '',
                 summaryHeader,
             },
             behaviour: {
@@ -44,14 +44,12 @@ function Export() {
                 .filter(category => category.isArgumentDefaultList)
                 .map(category => category.connectedArguments)
                 .reduce((acc, val) => acc.concat(val), []),
-            proArguments: userInput.categories
-                .filter(category => category.id === 'pro')
-                .map(category => category.connectedArguments.map(argumentId => userInput.argumentsList[argumentId]))
-                .reduce((acc, val) => acc.concat(val), []),
-            contraArguments: userInput.categories
-                .filter(category => category.id === 'contra')
-                .map(category => category.connectedArguments.map(argumentId => userInput.argumentsList[argumentId]))
-                .reduce((acc, val) => acc.concat(val), []),
+            categories: userInput.categories
+                .filter(category => !category.isArgumentDefaultList)
+                .map(category => {
+                    category.connectedArguments = category.connectedArguments.map(argumentId => userInput.argumentsList[argumentId]);
+                    return category;
+                })
         });
     }
 
@@ -62,14 +60,12 @@ function Export() {
             ' <h1 class="page-title">{{mainTitle}}</h1>' +
             '</div>' +
             '<div class="page-description">{{description}}</div>' +
-            '<table class="page-pro-arguments">' +
-            '<tr><th>{{argumentsFor}}</th></tr>' +
-            '<tr><td><ul>{{#proArguments}}<li>{{argumentText}}</li>{{/proArguments}}</ul>{{^proArguments}}{{noArguments}}{{/proArguments}}</td></tr>' +
+            '{{#categories}}' +
+            '<table class="page-category-arguments">' +
+            '<tr><th>{{title}}</th></tr>' +
+            '<tr><td><ul>{{#connectedArguments}}<li>{{argumentText}}</li>{{/connectedArguments}}</ul>{{^connectedArguments}}{{noArguments}}{{/connectedArguments}}</td></tr>' +
             '</table>' +
-            '<table class="page-contra-arguments">' +
-            '<tr><th>{{argumentsAgainst}}</th></tr>' +
-            '<tr><td><ul>{{#contraArguments}}<li>{{argumentText}}</li>{{/contraArguments}}</ul>{{^contraArguments}}{{noArguments}}{{/contraArguments}}</td></tr>' +
-            '</table>' +
+            '{{/categories}}' +
             '{{#useSummary}}' +
             '<h2>{{summaryHeader}}</h2>' +
             '<p>{{^hasSummaryComment}}{{labelNoSummaryComment}}{{/hasSummaryComment}}{{summaryComment}}</p>' +

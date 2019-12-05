@@ -1,10 +1,10 @@
 import React from 'react';
-import { DiscussionContext } from '../../context/DiscussionContext';
+import {useCategoryTask} from 'context/CategoryTaskContext';
 import classnames from 'classnames';
 
 export default class Header extends React.Component {
 
-    static contextType = DiscussionContext;
+    static contextType = useCategoryTask();
 
     state = {
         hasResources: false

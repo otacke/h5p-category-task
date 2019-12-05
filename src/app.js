@@ -3,12 +3,12 @@ import "regenerator-runtime/runtime";
 import React from 'react';
 import ReactDOM from "react-dom";
 import Main from "components/Main";
-import {DiscussionContext} from 'context/DiscussionContext';
+import {CategoryTaskProvider} from 'context/CategoryTaskContext';
 import {getBreakpoints, sanitizeParams} from "./components/utils";
 
 // Load library
 H5P = H5P || {};
-H5P.Discussion = (function () {
+H5P.CategoryTask = (function () {
 
     function Wrapper(params, contentId, extras = {}) {
         // Initialize event inheritance
@@ -59,8 +59,6 @@ H5P.Discussion = (function () {
             dropzone: "Dropzone :index",
             dropzoneWithValue: "Dropzone :index with value :statement",
             noArguments: "No arguments",
-            argumentsFor: "Arguments FOR",
-            argumentsAgainst: "Arguments AGAINST",
             moveTo: "Move to",
             deleteArgument: "Delete argument",
             actionMenuTitle: "Action menu",
@@ -73,14 +71,14 @@ H5P.Discussion = (function () {
             this.wrapper = wrapper;
 
             ReactDOM.render(
-                <DiscussionContext.Provider value={this}>
+                <CategoryTaskProvider value={this}>
                     <Main
                         {...this.params}
                         id={contentId}
                         language={language}
                         collectExportValues={this.collectExportValues}
                     />
-                </DiscussionContext.Provider>,
+                </CategoryTaskProvider>,
                 this.wrapper
             );
         };

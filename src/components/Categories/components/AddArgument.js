@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 
 AddArgument.propTypes = {
     displayFull: PropTypes.bool,
@@ -9,7 +9,7 @@ AddArgument.propTypes = {
 
 function AddArgument(props) {
 
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
     const {
         onClick,
     } = props;

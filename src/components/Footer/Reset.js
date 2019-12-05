@@ -1,11 +1,11 @@
 import React, {Fragment, useContext, useState} from 'react';
 import Popover from "../Popover/Popover";
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 
 function Reset() {
 
     const [showPopover, setPopover] = useState(false);
-    const discussionProcessContext = useContext(DiscussionContext);
+    const discussionProcessContext = useCategoryTask();
 
     function togglePopover(){
         setPopover(!showPopover);

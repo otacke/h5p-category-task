@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 
 function DragArrows() {
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
 
     return (
         <div className={"h5p-category-task-drag-element"}>

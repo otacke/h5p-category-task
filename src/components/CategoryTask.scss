@@ -464,12 +464,13 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
   }
 }
 
-.h5p-category-task-pro,
-.h5p-category-task-against {
+.h5p-category-task-category-container {
+  width: 48%;
+
   .h5p-category-task-category-header {
     overflow: hidden;
     min-height: 2.5rem;
-    padding-left: 3.75rem;
+    padding-left: 1.1875rem;
     display: flex;
     align-items: center;
     font-style: italic;
@@ -477,7 +478,9 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
     line-height: 1.5625rem;
     text-shadow: 2px 1px 3px rgba(28,28,28,0.5);
     border-radius: $borderRadius $borderRadius 0 0;
-
+    background-color: #698ab3;
+    color: #ffffff;
+    font-size: 1.125rem;
   }
 
   .h5p-category-task-header-argument-add {
@@ -506,35 +509,6 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
 
   .h5p-category-task-column{
     padding: 1rem;
-  }
-}
-
-.h5p-category-task-pro {
-  .h5p-category-task-category-header {
-    background-color: #54a169;
-    color: #ffffff;
-  }
-
-  .h5p-category-task-header-icon {
-    background-color: #5bb06e;
-    border: 3px solid #74d690;
-  }
-}
-
-.h5p-category-task-against {
-  .h5p-category-task-category-header {
-    background-color: #de5050;
-    color: #ffffff;
-  }
-
-  .h5p-category-task-header-icon {
-    background-color: #de5050;
-    border: 3px solid #fa837d;
-
-    img {
-      transform: rotateX(180deg);
-      filter: drop-shadow(2px -2px 2px rgba(0,0,0,0.2));
-    }
   }
 }
 
@@ -607,8 +581,7 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
   }
 
   img {
-    margin: 0;
-    margin-right: 0.25rem;
+    margin: 0 0.25rem 0 0;
   }
 
   .h5i-checked {
@@ -695,9 +668,7 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
     margin-bottom: 1rem;
   }
 
-  .page-pro-arguments,
-  .page-contra-arguments {
-
+  .page-category-arguments {
     th {
       text-align: start;
       color: #ffffff;
@@ -705,6 +676,13 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
       font-size: 1.5rem;
       font-style: italic;
       padding: 0.6rem;
+      background-color: #698ab3;
+      border: 1px solid #698ab3;
+    }
+
+    td {
+      border: 1px solid #dbe2e8;
+      border-top: 0;
     }
 
     ul {
@@ -717,40 +695,6 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
       display: inline-block;
       width: 1em;
       margin-left: -1em;
-    }
-  }
-
-  .page-pro-arguments {
-    $proBorderColor: #54a169;
-    border: 1px solid $proBorderColor;
-
-    th {
-      background-color: $proBorderColor;
-    }
-
-    tr {
-      background-color: #d9ead3;
-    }
-
-    ul li::before {
-      color: $proBorderColor;
-    }
-  }
-
-  .page-contra-arguments {
-    $contraBorderColor: #de5050;
-    border: 1px solid $contraBorderColor;
-
-    th {
-      background-color: $contraBorderColor;
-    }
-
-    tr {
-      background-color: #f4cccc;
-    }
-
-    ul li::before {
-      color: $contraBorderColor;
     }
   }
 

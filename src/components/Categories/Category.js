@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import HeaderIcon from "./components/HeaderIcon";
 import AddArgument from "./components/AddArgument";
 
 function Category(props) {
@@ -21,7 +20,6 @@ function Category(props) {
         <div className={additionalClassName.join(" ")}>
             {includeHeader && (
                 <div className={"h5p-category-task-category-header"}>
-                    <HeaderIcon />
                     {title}
                     {addArgument && (
                         <AddArgument

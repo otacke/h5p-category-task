@@ -1,13 +1,13 @@
 import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 
 /**
  * @return {null}
  */
 function DeleteStatement(props) {
 
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
 
     const {
         behaviour: {

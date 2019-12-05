@@ -38,6 +38,26 @@
       ]
   },
   {
+    "name": "categoriesList",
+    "label": "Categories",
+    "type": "group",
+    "expanded": true,
+    "fields": [
+      {
+        "name": "categoriesList",
+        "type": "list",
+        "label": "Categories",
+        "entity": "category",
+        "min": 2,
+        "field": {
+          "name": "text",
+          "type": "text",
+          "label": "Category"
+        }
+      }
+    ]
+  },
+  {
     "name": "summaryHeader",
     "type": "text",
     "label": "Summary",
@@ -115,18 +135,6 @@
     "label": "Localize",
     "common": true,
     "fields": [
-      {
-        "name": "argumentsFor",
-        "type": "text",
-        "label": "Header for the 'For' column",
-        "default": "Arguments FOR"
-      },
-      {
-        "name": "argumentsAgainst",
-        "type": "text",
-        "label": "Header for the 'Against' column",
-        "default": "Arguments AGAINST"
-      },
       {
         "name": "typeYourReasonsForSuchAnswers",
         "type": "text",

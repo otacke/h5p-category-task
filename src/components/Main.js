@@ -1,4 +1,4 @@
-import './Discussion.scss';
+import './CategoryTask.scss';
 import 'fonts/H5PReflectionFont.scss';
 import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';

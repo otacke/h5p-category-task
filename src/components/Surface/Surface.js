@@ -1,6 +1,6 @@
 import React, {useEffect, useContext, useReducer, useCallback} from 'react';
 import {getBox} from 'css-box-model';
-import {DiscussionContext} from 'context/DiscussionContext';
+import {useCategoryTask} from 'context/CategoryTaskContext';
 import Summary from "../Summary/Summary";
 import {DragDropContext} from "react-beautiful-dnd";
 import * as tweenFunctions from "tween-functions";
@@ -13,7 +13,7 @@ import {CategoryDataObject, ArgumentDataObject, getDnDId} from '../utils.js';
 import {ActionMenuDataObject} from "../utils";
 
 function Surface() {
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
 
     function stateHeadQuarter(state, action) {
         switch (action.type) {
@@ -124,13 +124,14 @@ function Surface() {
     } = context;
 
     registerReset(() => dispatch({type: "reset"}));
-    collectExportValues('userInput', () => ({categories: state.categories, argumentsList: state.argumentsList}));
+    collectExportValues('userInput', () => (JSON.parse(JSON.stringify({categories: state.categories, argumentsList: state.argumentsList}))));
 
     function init() {
         const {
             translate,
             params: {
                 argumentsList: argumentDataList = [],
+                categoriesList = [],
             },
             behaviour: {
                 randomizeArguments = true,
@@ -149,7 +150,7 @@ function Surface() {
         const categories = [];
         if (argumentsList.length > 0) {
             categories.push(new CategoryDataObject({
-                id: 'unprocessed',
+                id: 'unprocessed-1',
                 isArgumentDefaultList: true,
                 connectedArguments: argumentsList.filter(argument => argument.id % 2 === 0).map(argument => argument.id)
             }));
@@ -159,18 +160,12 @@ function Surface() {
                 connectedArguments: argumentsList.filter(argument => argument.id % 2 === 1).map(argument => argument.id)
             }));
         }
-        categories.push(new CategoryDataObject({
-            id: 'pro',
-            theme: 'h5p-category-task-pro',
+        categoriesList.forEach((category, index) => categories.push(new CategoryDataObject({
+            id: 'category-' + index,
+            theme: 'h5p-category-task-category-container',
             useNoArgumentsPlaceholder: true,
-            title: translate('argumentsFor'),
-        }));
-        categories.push(new CategoryDataObject({
-            id: 'contra',
-            theme: 'h5p-category-task-against',
-            useNoArgumentsPlaceholder: true,
-            title: translate('argumentsAgainst'),
-        }));
+            title: category,
+        })));
 
         return {
             categories,
@@ -208,7 +203,7 @@ function Surface() {
                 activeCategory: category.connectedArguments.findIndex(argumentId => argumentId === argument.id) !== -1,
                 onSelect: () => startMoving(getDnDId(argument), category.id)
             }));
-        if( allowAddingOfArguments === true ){
+        if (allowAddingOfArguments === true) {
             dynamicActions.push(new ActionMenuDataObject({
                 type: 'delete',
                 title: translate('deleteArgument'),
@@ -229,7 +224,7 @@ function Surface() {
             if (values.length) {
                 moveStepByStep(drag, values);
             } else {
-                if( isMobile ){
+                if (isMobile) {
                     scroll(newPosition);
                 }
                 drag.drop();
@@ -285,16 +280,68 @@ function Surface() {
                     additionalClassName={["h5p-category-task-unprocessed", !state.hasRemainingUnprocessedArguments ? "hidden" : ""]}
                     useNoArgumentsPlaceholder={false}
                 >
+                    {state.categories
+                        .filter(category => category.isArgumentDefaultList)
+                        .map(category => (
+                            <div
+                                key={category.id}
+                            >
+                                <Column
+                                    additionalClassName={"h5p-category-task-unprocessed-argument-list"}
+                                    droppableId={getDnDId(category)}
+                                >
+                                    {category.connectedArguments
+                                        .map(argument => state.argumentsList[state.argumentsList.findIndex(element => element.id === argument)])
+                                        .map((argument, index) => (
+                                            <Element
+                                                key={getDnDId(argument)}
+                                                draggableId={getDnDId(argument)}
+                                                dragIndex={index}
+                                                ariaLabel={translate('draggableItem', {
+                                                    argument: argument.argumentText
+                                                })}
+                                            >
+                                                <Argument
+                                                    actions={getDynamicActions(argument)}
+                                                    isDragEnabled={!isMobile}
+                                                    argument={argument}
+                                                    enableEditing={allowAddingOfArguments}
+                                                    onArgumentChange={argumentText => dispatch({
+                                                        type: 'editArgument',
+                                                        payload: {id: argument.id, argumentText}
+                                                    })}
+                                                />
+                                            </Element>
+                                        ))}
+                                </Column>
+                            </div>
+                        ))}
+                </Category>
                 {state.categories
-                    .filter(category => category.isArgumentDefaultList)
+                    .filter(category => !category.isArgumentDefaultList)
                     .map(category => (
-                        <div
+                        <Category
                             key={category.id}
+                            categoryId={category.id}
+                            includeHeader={category.title !== null}
+                            title={category.title}
+                            additionalClassName={[category.theme]}
+                            useNoArgumentsPlaceholder={category.useNoArgumentsPlaceholder}
+                            addArgument={allowAddingOfArguments}
+                            onAddArgument={() => dispatch(
+                                {
+                                    type: 'addArgument', payload: {
+                                        id: category.id,
+                                    }
+                                })}
                         >
                             <Column
-                                additionalClassName={"h5p-category-task-unprocessed-argument-list"}
+                                additionalClassName={"h5p-category-task-argument-list"}
                                 droppableId={getDnDId(category)}
                             >
+                                {category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
+                                    <span>{translate('noArguments')}</span>
+                                )}
                                 {category.connectedArguments
                                     .map(argument => state.argumentsList[state.argumentsList.findIndex(element => element.id === argument)])
                                     .map((argument, index) => (
@@ -303,7 +350,7 @@ function Surface() {
                                             draggableId={getDnDId(argument)}
                                             dragIndex={index}
                                             ariaLabel={translate('draggableItem', {
-                                                argument: argument.argumentText
+                                                statement: argument.argumentText
                                             })}
                                         >
                                             <Argument
@@ -319,60 +366,8 @@ function Surface() {
                                         </Element>
                                     ))}
                             </Column>
-                        </div>
+                        </Category>
                     ))}
-                    </Category>
-                {state.categories
-                    .filter(category => !category.isArgumentDefaultList)
-                    .map(category => (
-                    <Category
-                        key={category.id}
-                        categoryId={category.id}
-                        includeHeader={category.title !== null}
-                        title={category.title}
-                        additionalClassName={[category.theme]}
-                        useNoArgumentsPlaceholder={category.useNoArgumentsPlaceholder}
-                        addArgument={allowAddingOfArguments}
-                        onAddArgument={() => dispatch(
-                            {
-                                type: 'addArgument', payload: {
-                                    id: category.id,
-                                }
-                            })}
-                    >
-                        <Column
-                            additionalClassName={"h5p-category-task-argument-list"}
-                            droppableId={getDnDId(category)}
-                        >
-                            {category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
-                                <span>{translate('noArguments')}</span>
-                            )}
-                            {category.connectedArguments
-                                .map(argument => state.argumentsList[state.argumentsList.findIndex(element => element.id === argument)])
-                                .map((argument, index) => (
-                                    <Element
-                                        key={getDnDId(argument)}
-                                        draggableId={getDnDId(argument)}
-                                        dragIndex={index}
-                                        ariaLabel={translate('draggableItem', {
-                                            statement: argument.argumentText
-                                        })}
-                                    >
-                                        <Argument
-                                            actions={getDynamicActions(argument)}
-                                            isDragEnabled={!isMobile}
-                                            argument={argument}
-                                            enableEditing={allowAddingOfArguments}
-                                            onArgumentChange={argumentText => dispatch({
-                                                type: 'editArgument',
-                                                payload: {id: argument.id, argumentText}
-                                            })}
-                                        />
-                                    </Element>
-                                ))}
-                        </Column>
-                    </Category>
-                ))}
             </DragDropContext>
             {provideSummary === true && (
                 <Summary/>

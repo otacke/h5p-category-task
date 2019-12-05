@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import TinyPopover from "react-tiny-popover";
 import classnames from 'classnames';
 import trash from '@assets/trash.svg';
-import {DiscussionContext} from "context/DiscussionContext";
+import {useCategoryTask} from "context/CategoryTaskContext";
 import {getBox} from 'css-box-model';
 
 function ActionMenu(props) {
 
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
     const {
         translate,
     } = context;
@@ -70,7 +70,11 @@ function ActionMenu(props) {
                     value={settings.id}
                     type={"checkbox"}
                     checked={settings.activeCategory}
-                    onChange={() => handleSelect(settings.onSelect)}
+                    onChange={() => {
+                        if( settings.activeCategory !== true){
+                            handleSelect(settings.onSelect)
+                        }
+                    }}
                     aria-labelledby={"action-" + index}
                 />
                 <span

@@ -1,10 +1,10 @@
 import React, {useState, useContext} from 'react';
 import classnames from 'classnames';
-import {DiscussionContext} from 'context/DiscussionContext';
+import {useCategoryTask} from 'context/CategoryTaskContext';
 
 function Summary() {
 
-    const context = useContext(DiscussionContext);
+    const context = useCategoryTask();
     const [comment, setComment] = useState('');
 
     const {
