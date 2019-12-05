@@ -1,4 +1,4 @@
-import React, {useEffect, useContext, useReducer, useCallback} from 'react';
+import React, {useEffect, useReducer, useCallback} from 'react';
 import {getBox} from 'css-box-model';
 import {useCategoryTask} from 'context/CategoryTaskContext';
 import Summary from "../Summary/Summary";

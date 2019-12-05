@@ -1,4 +1,4 @@
-import React, {Fragment, useContext, useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import Popover from "../Popover/Popover";
 import {useCategoryTask} from "context/CategoryTaskContext";
 

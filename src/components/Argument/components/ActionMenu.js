@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TinyPopover from "react-tiny-popover";
 import classnames from 'classnames';
