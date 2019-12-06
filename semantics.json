@@ -41,13 +41,16 @@
     "name": "categoriesList",
     "label": "Categories",
     "type": "group",
+    "importance": "high",
     "expanded": true,
     "fields": [
       {
         "name": "categoriesList",
         "type": "list",
         "label": "Categories",
+        "importance": "high",
         "entity": "category",
+        "optional": true,
         "min": 2,
         "field": {
           "name": "text",
@@ -164,18 +167,6 @@
         "type": "text",
         "label": "Label for the \"Add argument\"-button",
         "default": "Add argument"
-      },
-      {
-        "name": "yes",
-        "type": "text",
-        "label": "Label for the \"Yes\"-button",
-        "default": "Yes"
-      },
-      {
-        "name": "no",
-        "type": "text",
-        "label": "Label for the \"No\"-button",
-        "default": "No"
       },
       {
         "name": "ifYouContinueAllYourChangesWillBeLost",

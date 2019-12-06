@@ -8,10 +8,15 @@
     },
     {
       "label": "Arguments",
-      "entity": "argument",
       "field": {
         "label": "Argument",
         "description": "The statement that the user needs to process"
+      }
+    },
+    {
+      "label": "Categories",
+      "field": {
+        "label": "Category"
       }
     },
     {
@@ -51,14 +56,6 @@
       "label": "Localize",
       "fields": [
         {
-          "label": "Header for the 'For' column",
-          "default": "Arguments FOR"
-        },
-        {
-          "label": "Header for the 'Against' column",
-          "default": "Arguments AGAINST"
-        },
-        {
           "label": "Placeholder for the text boxes",
           "default": "Type your reasons for such answers"
         },
@@ -77,14 +74,6 @@
         {
           "label": "Label for the \"Add argument\"-button",
           "default": "Add argument"
-        },
-        {
-          "label": "Label for the \"Yes\"-button",
-          "default": "Yes"
-        },
-        {
-          "label": "Label for the \"No\"-button",
-          "default": "No"
         },
         {
           "label": "Inform the user that data will be lost if he/she continues",

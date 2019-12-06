@@ -8,10 +8,15 @@
     },
     {
       "label": "Argumenter",
-      "entity": "argument",
       "field": {
         "label": "Argument",
         "description": "Argument som brukeren skal ta stilling til"
+      }
+    },
+    {
+      "label": "Kategorier",
+      "field": {
+        "label": "Kategori"
       }
     },
     {
@@ -52,14 +57,6 @@
       "label": "Localize",
       "fields": [
         {
-          "label": "Tittel som bruker si 'For'-kolonnen",
-          "default": "Argumenter FOR"
-        },
-        {
-          "label": "Tittel som bruker si 'Mot'-kolonnen",
-          "default": "Argumenter MOT"
-        },
-        {
           "label": "Midlertidig tekst for tekstfeltene",
           "default": "Skriv en begrunnelse for dine svar"
         },
@@ -78,14 +75,6 @@
         {
           "label": "Tekst på \"Legg til argument\"-knappen",
           "default": "Legg til argument"
-        },
-        {
-          "label": "Tekst på \"Ja\"-knappen",
-          "default": "Ja"
-        },
-        {
-          "label": "Tekst på \"Nei\"-knappen",
-          "default": "Nei"
         },
         {
           "label": "Informer brukeren om at all data vil gå tapt om vedkommende fortsetter",
