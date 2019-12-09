@@ -4,7 +4,7 @@ import {Droppable} from 'react-beautiful-dnd';
 import classnames from 'classnames';
 import {getDnDId} from "../utils";
 import {ElementLayout} from "./Element";
-import Argument, {ArgumentLayout} from "../Argument/Argument";
+import {ArgumentLayout} from "../Argument/Argument";
 import UnEditableArgument from "../Argument/components/UnEditableArgument";
 
 

@@ -9,8 +9,7 @@ import {isMobile} from 'react-device-detect';
 import Element from "../DragAndDrop/Element";
 import Argument from "../Argument/Argument";
 import Column from "../DragAndDrop/Column";
-import {CategoryDataObject, ArgumentDataObject, getDnDId} from '../utils.js';
-import {ActionMenuDataObject} from "../utils";
+import {CategoryDataObject, ArgumentDataObject, getDnDId, ActionMenuDataObject} from '../utils';
 
 function Surface() {
     const context = useCategoryTask();
@@ -128,7 +127,6 @@ function Surface() {
 
     function init() {
         const {
-            translate,
             params: {
                 argumentsList: argumentDataList = [],
                 categoriesList = [],
