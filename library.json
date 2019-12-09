@@ -5,6 +5,7 @@
   "minorVersion": 1,
   "patchVersion": 0,
   "runnable": 1,
+  "hasIcon": 1,
   "author": "NDLA",
   "coreApi": {
     "majorVersion": 1,
