@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function UnEditableArgument(props) {
+function UnEditableArgument({argument}) {
     return (
         <p className={"h5p-category-task-element"}>
-            {props.argument}
+            {argument}
         </p>
     );
 }

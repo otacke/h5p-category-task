@@ -289,6 +289,7 @@ function Surface() {
                                 <Column
                                     additionalClassName={"h5p-category-task-unprocessed-argument-list"}
                                     droppableId={getDnDId(category)}
+                                    argumentsList={state.argumentsList}
                                 >
                                     {category.connectedArguments
                                         .map(argument => state.argumentsList[state.argumentsList.findIndex(element => element.id === argument)])
@@ -338,6 +339,7 @@ function Surface() {
                             <Column
                                 additionalClassName={"h5p-category-task-argument-list"}
                                 droppableId={getDnDId(category)}
+                                argumentsList={state.argumentsList}
                             >
                                 {category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
                                     <span>{translate('noArguments')}</span>

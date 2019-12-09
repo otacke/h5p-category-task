@@ -9,7 +9,6 @@ function Element(props) {
         children,
         draggableId,
         dragIndex,
-        disableTransform,
         ariaLabel,
     } = props;
 
@@ -18,26 +17,20 @@ function Element(props) {
             draggableId={draggableId}
             index={dragIndex}
         >
-            {(provided, snapshot) => {
-                return (
-                    <div
-                        className={"h5p-category-task-draggable-container"}
-                        aria-label={ariaLabel}
+            {(provided, snapshot) => (
+                <div
+                    className={"h5p-category-task-draggable-container"}
+                    aria-label={ariaLabel}
+                >
+                    <ElementLayout
+                        provided={provided}
+                        snapshot={snapshot}
+                        ariaLabel={ariaLabel}
                     >
-                        <div
-                            className={classnames("h5p-category-task-draggable-element", {
-                                'h5p-category-task-no-transform': disableTransform,
-                                'h5p-category-task-active-draggable': snapshot.isDragging,
-                            })}
-                            ref={provided.innerRef}
-                            {...provided.dragHandleProps}
-                            {...provided.draggableProps}
-                        >
-                            {children}
-                        </div>
-                    </div>
-                )
-            }}
+                        {children}
+                    </ElementLayout>
+                </div>
+            )}
         </Draggable>
     );
 }
@@ -49,4 +42,28 @@ Element.propTypes = {
     ariaLabel: PropTypes.string,
 };
 
-export default Element;
+function ElementLayout({children, provided, snapshot}) {
+    return (
+        <div
+            className={classnames("h5p-category-task-draggable-element", {
+                'h5p-category-task-active-draggable': snapshot.isDragging,
+            })}
+            ref={provided.innerRef}
+            {...provided.dragHandleProps}
+            {...provided.draggableProps}
+        >
+            {children}
+        </div>
+    );
+}
+
+ElementLayout.propTypes = {
+    provided: PropTypes.object,
+    snapshot: PropTypes.object,
+    ariaLabel: PropTypes.string,
+};
+
+export {
+    Element as default,
+    ElementLayout,
+};
