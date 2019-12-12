@@ -8,19 +8,19 @@ import {ArgumentLayout} from "../Argument/Argument";
 import UnEditableArgument from "../Argument/components/UnEditableArgument";
 
 
-function Column(props) {
-    const {
-        droppableId,
-        children,
-        additionalClassName,
-        argumentsList,
-    } = props;
-
+function Column({
+                    droppableId,
+                    children,
+                    additionalClassName,
+                    argumentsList,
+                    disableDrop,
+                }) {
     return (
         <div
             className={additionalClassName}
         >
             <Droppable
+                isDropDisabled={disableDrop}
                 droppableId={droppableId}
                 renderClone={(provided, snapshot, rubrics) => {
                     const index = argumentsList.findIndex(element => getDnDId(element) === rubrics.draggableId);

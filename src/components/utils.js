@@ -33,6 +33,7 @@ export function CategoryDataObject(initValues) {
     this.theme = 'h5p-category-task-category-default';
     this.useNoArgumentsPlaceholder = false;
     this.prefix = 'category';
+    this.actionTargetContainer = false;
 
     return Object.assign(this, initValues);
 }
@@ -49,7 +50,7 @@ export function ActionMenuDataObject(initValues) {
 }
 
 export function getDnDId(element) {
-    return element.prefix + "-" + element.id;
+    return [element.prefix, element.id].join("-");
 }
 
 export function debounce(func, wait, immediate) {

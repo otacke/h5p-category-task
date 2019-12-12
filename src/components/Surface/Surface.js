@@ -10,6 +10,7 @@ import Element from "../DragAndDrop/Element";
 import Argument from "../Argument/Argument";
 import Column from "../DragAndDrop/Column";
 import {CategoryDataObject, ArgumentDataObject, getDnDId, ActionMenuDataObject} from '../utils';
+import Dropzone from "../DragAndDrop/Dropzone";
 
 function Surface() {
     const context = useCategoryTask();
@@ -21,14 +22,19 @@ function Surface() {
                     from,
                     to
                 } = action.payload;
-                const newCategories = Array.from(state.categories);
+                const newCategories = JSON.parse(JSON.stringify(state.categories));
                 const movedArgument = newCategories[newCategories.findIndex(category => getDnDId(category) === from.droppableId)].connectedArguments.splice(from.index, 1);
-                newCategories[newCategories.findIndex(category => getDnDId(category) === to.droppableId)].connectedArguments.splice(to.index, 0, movedArgument[0]);
-
+                newCategories.map(category => {
+                    category.actionTargetContainer = false;
+                    if (getDnDId(category) === to.droppableId) {
+                        category.connectedArguments.splice(to.index, 0, movedArgument[0]);
+                    }
+                });
                 return {
                     ...state,
                     categories: newCategories,
                     hasRemainingUnprocessedArguments: newCategories.filter(category => category.isArgumentDefaultList && category.connectedArguments.length > 0).length > 0,
+                    actionDropActive: false,
                 };
             case 'editArgument': {
                 const {
@@ -95,6 +101,17 @@ function Surface() {
             case 'reset': {
                 return init();
             }
+            case "setTargetContainer": {
+                const newCategories = JSON.parse(JSON.stringify(state.categories));
+                return {
+                    ...state,
+                    categories: newCategories.map(category => {
+                        category.actionTargetContainer = category.id === action.payload.container;
+                        return category;
+                    }),
+                    actionDropActive: true,
+                }
+            }
             default:
                 return state;
         }
@@ -123,7 +140,10 @@ function Surface() {
     } = context;
 
     registerReset(() => dispatch({type: "reset"}));
-    collectExportValues('userInput', () => (JSON.parse(JSON.stringify({categories: state.categories, argumentsList: state.argumentsList}))));
+    collectExportValues('userInput', () => (JSON.parse(JSON.stringify({
+        categories: state.categories,
+        argumentsList: state.argumentsList
+    }))));
 
     function init() {
         const {
@@ -170,6 +190,7 @@ function Surface() {
             argumentsList,
             idCounter: argumentsList.length - 1,
             hasRemainingUnprocessedArguments: argumentsList.length > 0,
+            actionDropActive: false,
         }
     }
 
@@ -181,6 +202,11 @@ function Surface() {
 
         if (!destination) {
             return;
+        }
+
+        if (Array.isArray(destination.droppableId.match(/(.)+-dzone$/))) {
+            destination.droppableId = destination.droppableId.replace('-dzone', '');
+            destination.index = state.categories[state.categories.findIndex(category => getDnDId(category) === destination.droppableId)].connectedArguments.length;
         }
 
         dispatch({
@@ -243,6 +269,7 @@ function Surface() {
         if (!preDrag) {
             return;
         }
+        dispatch({type: "setTargetContainer", payload: {container: target}});
         const targetContainer = getBox(document.getElementById(target));
         const dragElement = getBox(document.getElementById(draggableElement));
         const start = dragElement.borderBox.center;
@@ -334,12 +361,20 @@ function Surface() {
                                     }
                                 })}
                         >
+                            {!isMobile && (
+                                <Dropzone
+                                    droppablePrefix={getDnDId(category)}
+                                    label={translate(allowAddingOfArguments ? 'dropExistingOrAddNewArgument' : 'dropArgumentsHere')}
+                                    disableDrop={state.actionDropActive || (state.actionDropActive && !category.actionTargetContainer)}
+                                />
+                            )}
                             <Column
                                 additionalClassName={"h5p-category-task-argument-list"}
                                 droppableId={getDnDId(category)}
                                 argumentsList={state.argumentsList}
+                                disableDrop={state.actionDropActive && !category.actionTargetContainer}
                             >
-                                {category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
+                                {isMobile && category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
                                     <span>{translate('noArguments')}</span>
                                 )}
                                 {category.connectedArguments
