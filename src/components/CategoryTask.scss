@@ -381,9 +381,8 @@ article, aside, details, figcaption, figure, footer, header, main, menu, nav, se
   position: relative;
 }
 
-.h5p-category-task-draggable-element,
 .h5p-category-task-draggable-element > div {
-  flex-grow: 1;
+  position: relative;
 }
 
 .h5p-category-task-add {
