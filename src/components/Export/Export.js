@@ -4,58 +4,58 @@ import {escapeHTML} from "../utils";
 
 function Export() {
 
-    const context = useCategoryTask();
+  const context = useCategoryTask();
+  const {
+    translate
+  } = context;
+  const exportContainer = useRef();
+  let exportDocument;
+  let exportObject;
+
+  function getExportObject() {
     const {
-        translate
+      params: {
+        header,
+        description = '',
+        summaryHeader,
+      },
+      behaviour: {
+        provideSummary = true,
+      },
+      translations,
+      collectExportValues,
     } = context;
-    const exportContainer = useRef();
-    let exportDocument;
-    let exportObject;
 
-    function getExportObject() {
-        const {
-            params: {
-                header,
-                description = '',
-                summaryHeader,
-            },
-            behaviour: {
-                provideSummary = true,
-            },
-            translations,
-            collectExportValues,
-        } = context;
+    const {
+      resources,
+      summary,
+      userInput
+    } = collectExportValues();
 
-        const {
-            resources,
-            summary,
-            userInput
-        } = collectExportValues();
+    return Object.assign({}, translations, {
+      mainTitle: header,
+      description,
+      summaryHeader,
+      hasResources: resources && resources.length > 0,
+      useSummary: provideSummary,
+      hasSummaryComment: summary && summary.length > 0,
+      summaryComment: summary,
+      resources: resources,
+      unprocessedArguments: userInput.categories
+        .filter(category => category.isArgumentDefaultList)
+        .map(category => category.connectedArguments)
+        .reduce((acc, val) => acc.concat(val), []),
+      categories: userInput.categories
+        .filter(category => !category.isArgumentDefaultList)
+        .map(category => {
+          category.connectedArguments = category.connectedArguments.map(argumentId => userInput.argumentsList[argumentId]);
+          return category;
+        })
+    });
+  }
 
-        return Object.assign({}, translations, {
-            mainTitle: header,
-            description,
-            summaryHeader,
-            hasResources: resources && resources.length > 0,
-            useSummary: provideSummary,
-            hasSummaryComment: summary && summary.length > 0,
-            summaryComment: summary,
-            resources: resources,
-            unprocessedArguments: userInput.categories
-                .filter(category => category.isArgumentDefaultList)
-                .map(category => category.connectedArguments)
-                .reduce((acc, val) => acc.concat(val), []),
-            categories: userInput.categories
-                .filter(category => !category.isArgumentDefaultList)
-                .map(category => {
-                    category.connectedArguments = category.connectedArguments.map(argumentId => userInput.argumentsList[argumentId]);
-                    return category;
-                })
-        });
-    }
-
-    function getExportPreview() {
-        const documentExportTemplate =
+  function getExportPreview() {
+    const documentExportTemplate =
             '<div class="export-preview">' +
             '<div class="page-header" role="heading" tabindex="-1">' +
             ' <h1 class="page-title">{{mainTitle}}</h1>' +
@@ -81,49 +81,49 @@ function Export() {
             '{{/hasResources}}' +
             '</div>';
 
-        return Mustache.render(documentExportTemplate, exportObject);
-    }
+    return Mustache.render(documentExportTemplate, exportObject);
+  }
 
-    function handleExport() {
-        const {
-            translate,
-        } = context;
+  function handleExport() {
+    const {
+      translate,
+    } = context;
 
-        exportObject = getExportObject();
+    exportObject = getExportObject();
 
-        context.triggerXAPIScored(0, 0, 'completed');
+    context.triggerXAPIScored(0, 0, 'completed');
 
-        exportDocument = new H5P.ExportPage(
-            escapeHTML(exportObject.mainTitle),
-            getExportPreview(),
-            H5PIntegration.reportingIsEnabled || false,
-            escapeHTML(translate('submitText')),
-            escapeHTML(translate('submitConfirmedText')),
-            escapeHTML(translate('selectAll')),
-            escapeHTML(translate('export')),
-            H5P.instances[0].getLibraryFilePath('exportTemplate.docx'),
-            exportObject
-        );
-        exportDocument.getElement().prependTo(exportContainer.current);
-        H5P.$window.on('resize', () => exportDocument.trigger('resize'));
-    }
-
-    return (
-        <>
-            <button
-                className={"h5p-category-task-button-export"}
-                onClick={handleExport}
-                type={"button"}
-            >
-                <span
-                    className={"h5p-ri hri-document"}
-                    aria-hidden={true}
-                />
-                {translate('createDocument')}
-            </button>
-            <div className={"export-container"} ref={exportContainer}/>
-        </>
+    exportDocument = new H5P.ExportPage(
+      escapeHTML(exportObject.mainTitle),
+      getExportPreview(),
+      H5PIntegration.reportingIsEnabled || false,
+      escapeHTML(translate('submitText')),
+      escapeHTML(translate('submitConfirmedText')),
+      escapeHTML(translate('selectAll')),
+      escapeHTML(translate('export')),
+      H5P.instances[0].getLibraryFilePath('exportTemplate.docx'),
+      exportObject
     );
+    exportDocument.getElement().prependTo(exportContainer.current);
+    H5P.$window.on('resize', () => exportDocument.trigger('resize'));
+  }
+
+  return (
+    <>
+      <button
+        className={"h5p-category-task-button-export"}
+        onClick={handleExport}
+        type={"button"}
+      >
+        <span
+          className={"h5p-ri hri-document"}
+          aria-hidden={true}
+        />
+        {translate('createDocument')}
+      </button>
+      <div className={"export-container"} ref={exportContainer}/>
+    </>
+  );
 }
 
 export default Export;

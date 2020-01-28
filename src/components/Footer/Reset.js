@@ -4,81 +4,81 @@ import {useCategoryTask} from "context/CategoryTaskContext";
 
 function Reset() {
 
-    const [showPopover, setPopover] = useState(false);
-    const discussionProcessContext = useCategoryTask();
+  const [showPopover, setPopover] = useState(false);
+  const discussionProcessContext = useCategoryTask();
 
-    function togglePopover(){
-        setPopover(!showPopover);
-    }
+  function togglePopover() {
+    setPopover(!showPopover);
+  }
 
-    function confirmReset() {
-        reset();
-        togglePopover();
-    }
+  function confirmReset() {
+    reset();
+    togglePopover();
+  }
 
-    const {
-        behaviour: {
-            enableRetry = false
-        },
-        reset,
-        translations
-    } = discussionProcessContext;
+  const {
+    behaviour: {
+      enableRetry = false
+    },
+    reset,
+    translations
+  } = discussionProcessContext;
 
-    return (
-        <Fragment>
-            {enableRetry === true && (
-                <Popover
-                    handleClose={togglePopover}
-                    show={showPopover}
-                    classnames={Array.from(discussionProcessContext.activeBreakpoints)}
-                    close={translations.close}
-                    header={translations.restart}
-                    align={"start"}
-                    popoverContent={(
-                        <div
-                            role={"dialog"}
-                            aria-labelledby={"resetTitle"}
-                            className={"h5p-category-task-reset-modal"}
-                        >
-                            <div
-                                id={"resetTitle"}
-                            >
-                                {translations.ifYouContinueAllYourChangesWillBeLost}
-                            </div>
-                            <div>
-                                <button
-                                    onClick={confirmReset}
-                                    className={"continue"}
-                                    type={"button"}
-                                >
-                                    {translations.continue}
-                                </button>
-                                <button
-                                    onClick={togglePopover}
-                                    className={"cancel"}
-                                    type={"button"}
-                                >
-                                    {translations.cancel}
-                                </button>
-                            </div>
-                        </div>
-                    )}
+  return (
+    <Fragment>
+      {enableRetry === true && (
+        <Popover
+          handleClose={togglePopover}
+          show={showPopover}
+          classnames={Array.from(discussionProcessContext.activeBreakpoints)}
+          close={translations.close}
+          header={translations.restart}
+          align={"start"}
+          popoverContent={(
+            <div
+              role={"dialog"}
+              aria-labelledby={"resetTitle"}
+              className={"h5p-category-task-reset-modal"}
+            >
+              <div
+                id={"resetTitle"}
+              >
+                {translations.ifYouContinueAllYourChangesWillBeLost}
+              </div>
+              <div>
+                <button
+                  onClick={confirmReset}
+                  className={"continue"}
+                  type={"button"}
                 >
-                    <button
-                        className={"h5p-category-task-button-restart"}
-                        onClick={togglePopover}
-                        type={"button"}
-                    >
-                        <span
-                            className={"h5p-ri hri-restart"}
-                            aria-hidden={"true"}
-                        />
-                        {translations.restart}
-                    </button>
-                </Popover>
-            )}
-        </Fragment>
-    );
+                  {translations.continue}
+                </button>
+                <button
+                  onClick={togglePopover}
+                  className={"cancel"}
+                  type={"button"}
+                >
+                  {translations.cancel}
+                </button>
+              </div>
+            </div>
+          )}
+        >
+          <button
+            className={"h5p-category-task-button-restart"}
+            onClick={togglePopover}
+            type={"button"}
+          >
+            <span
+              className={"h5p-ri hri-restart"}
+              aria-hidden={"true"}
+            />
+            {translations.restart}
+          </button>
+        </Popover>
+      )}
+    </Fragment>
+  );
 }
 
 export default Reset;
