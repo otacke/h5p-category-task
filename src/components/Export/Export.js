@@ -1,5 +1,6 @@
 import React, {useRef} from 'react';
 import {useCategoryTask} from "context/CategoryTaskContext";
+import {escapeHTML} from "../utils";
 
 function Export() {
 
@@ -93,13 +94,13 @@ function Export() {
         context.triggerXAPIScored(0, 0, 'completed');
 
         exportDocument = new H5P.ExportPage(
-            exportObject.mainTitle,
+            escapeHTML(exportObject.mainTitle),
             getExportPreview(),
-            true,
-            translate('submitText'),
-            translate('submitConfirmedText'),
-            translate('selectAll'),
-            translate('export'),
+            H5PIntegration.reportingIsEnabled || false,
+            escapeHTML(translate('submitText')),
+            escapeHTML(translate('submitConfirmedText')),
+            escapeHTML(translate('selectAll')),
+            escapeHTML(translate('export')),
             H5P.instances[0].getLibraryFilePath('exportTemplate.docx'),
             exportObject
         );
@@ -112,6 +113,7 @@ function Export() {
             <button
                 className={"h5p-category-task-button-export"}
                 onClick={handleExport}
+                type={"button"}
             >
                 <span
                     className={"h5p-ri hri-document"}

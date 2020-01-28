@@ -121,6 +121,7 @@ function ArgumentLayout(props) {
                         className={"h5p-category-task-argument-actions"}
                         aria-label={"See available actions"}
                         onClick={toggle}
+                        type={"button"}
                     >
                         <span className={"fa fa-caret-down"}/>
                     </button>
