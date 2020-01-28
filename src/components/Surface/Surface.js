@@ -17,7 +17,7 @@ function Surface() {
 
   function stateHeadQuarter(state, action) {
     switch (action.type) {
-      case 'move':
+      case 'move': {
         const {
           from,
           to
@@ -36,6 +36,7 @@ function Surface() {
           hasRemainingUnprocessedArguments: newCategories.filter(category => category.isArgumentDefaultList && category.connectedArguments.length > 0).length > 0,
           actionDropActive: false,
         };
+      }
       case 'editArgument': {
         const {
           id,
