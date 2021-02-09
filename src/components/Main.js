@@ -4,6 +4,7 @@ import React, {useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 import Surface from './Surface/Surface';
 import Footer from "./Footer/Footer";
+import ReactHtmlParser from 'react-html-parser';
 
 function Main(props) {
 
@@ -47,7 +48,7 @@ function Main(props) {
           ref={resourceContainer}
         >
           {description && (
-            <p className={'h5p-category-task-description'}>{description}</p>
+            <div className={'h5p-category-task-description'}>{ReactHtmlParser(description)}</div>
           )}
         </div>
         <Surface/>
