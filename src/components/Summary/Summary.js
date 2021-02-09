@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import classnames from 'classnames';
 import {useCategoryTask} from 'context/CategoryTaskContext';
+import ReactHtmlParser from "react-html-parser";
 
 function Summary() {
 
@@ -32,7 +33,7 @@ function Summary() {
         <h2>{summaryHeader ? summaryHeader : translate('summary')}</h2>
       </label>
       {summaryInstruction && (
-        <p>{summaryInstruction}</p>
+        <div>{ReactHtmlParser(summaryInstruction)}</div>
       )}
       <textarea
         id={"summary"}
