@@ -1,6 +1,6 @@
 import React, {useRef} from 'react';
 import {useCategoryTask} from "context/CategoryTaskContext";
-import {escapeHTML} from "../utils";
+import {escapeHTML, stripHTML} from "../utils";
 
 function Export() {
 
@@ -34,7 +34,7 @@ function Export() {
 
     return Object.assign({}, translations, {
       mainTitle: header,
-      description,
+      description: stripHTML(description),
       summaryHeader,
       hasResources: resources && resources.length > 0,
       useSummary: provideSummary,
