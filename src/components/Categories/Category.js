@@ -44,7 +44,6 @@ Category.propTypes = {
   title: PropTypes.string,
   addArgument: PropTypes.bool,
   includeHeader: PropTypes.bool,
-  useNoArgumentsPlaceholder: PropTypes.bool,
   onAddArgument: PropTypes.func,
 };
 
@@ -54,7 +53,6 @@ Category.defaultProps = {
   title: "",
   addArgument: true,
   includeHeader: true,
-  useNoArgumentsPlaceholder: true,
 };
 
 export default Category;
