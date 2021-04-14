@@ -305,7 +305,6 @@ function Surface() {
           categoryId={"unprocessed"}
           includeHeader={false}
           additionalClassName={["h5p-category-task-unprocessed", !state.hasRemainingUnprocessedArguments ? "hidden" : ""]}
-          useNoArgumentsPlaceholder={false}
         >
           {state.categories
             .filter(category => category.isArgumentDefaultList)
@@ -354,7 +353,6 @@ function Surface() {
               includeHeader={category.title !== null}
               title={category.title}
               additionalClassName={[category.theme]}
-              useNoArgumentsPlaceholder={category.useNoArgumentsPlaceholder}
               addArgument={allowAddingOfArguments}
               onAddArgument={() => dispatch(
                 {
@@ -363,21 +361,14 @@ function Surface() {
                   }
                 })}
             >
-              {!isMobile && (
-                <Dropzone
-                  droppablePrefix={getDnDId(category)}
-                  label={translate(allowAddingOfArguments ? 'dropExistingOrAddNewArgument' : 'dropArgumentsHere')}
-                  disableDrop={state.actionDropActive || (state.actionDropActive && !category.actionTargetContainer)}
-                />
-              )}
               <Column
                 additionalClassName={"h5p-category-task-argument-list"}
                 droppableId={getDnDId(category)}
                 argumentsList={state.argumentsList}
                 disableDrop={state.actionDropActive && !category.actionTargetContainer}
               >
-                {isMobile && category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
-                  <span>{translate('noArguments')}</span>
+                {category.useNoArgumentsPlaceholder && category.connectedArguments.length === 0 && (
+                  <span>{translate(allowAddingOfArguments ? 'dropExistingOrAddNewArgument' : 'dropArgumentsHere')}</span>
                 )}
                 {category.connectedArguments
                   .map(argument => state.argumentsList[state.argumentsList.findIndex(element => element.id === argument)])
